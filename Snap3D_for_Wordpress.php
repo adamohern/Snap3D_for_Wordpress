@@ -26,7 +26,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-add_filter( 'admin_post_thumbnail_html', 'filter_thumb', 10, 2 );
+add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content, $post_id ) {
     return $content . "\n<!-- Snap3D_for_Wordpress was here. -->";
 }
