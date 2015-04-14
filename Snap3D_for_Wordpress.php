@@ -27,7 +27,7 @@
 */
 
 add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
-function filter_thumb( $content, $post_id ) {
+function filter_thumb( $content ) {
     return $content . "\n<!-- Snap3D_for_Wordpress was here. -->";
 }
 
