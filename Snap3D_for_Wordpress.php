@@ -3,7 +3,7 @@
  * Plugin Name: Snap3D_for_Wordpress
  * Plugin URI: https://github.com/adamohern/Snap3D_for_Wordpress
  * Description: A Wordpress plugin for integrating Snap3D.io embeds as featured images or inline content.
- * Version: 150414.2
+ * Version: 150414.3
  * Author: Snap3D
  * Author URI: http://Snap3D.io
  * Network: true
