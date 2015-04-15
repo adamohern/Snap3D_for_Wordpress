@@ -92,7 +92,47 @@ add_action( 'save_post', 'Snap3D_meta_save' );
 // Render thumbnail in theme
 add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content ) {
-    return $content . "\n<!-- Snap3D_for_Wordpress was here. -->";
+    $embed = curl_download("http://snap3d.io/?code=570");
+    return $content . "\n<!-- Snap3D_for_Wordpress was here. Generated code: $embed -->\n";
+}
+
+
+
+// Function for getting the mothership to generate an embed code for us.
+function curl_download($url){
+
+    // is cURL installed yet?
+    if (!function_exists('curl_init')){
+        die('Sorry cURL is not installed!');
+    }
+
+    $ch = curl_init();
+
+    // Set URL to download
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    // Set referer to Wordpress site URL
+    curl_setopt($ch, CURLOPT_REFERER, get_site_url());
+
+    // User agent
+    curl_setopt($ch, CURLOPT_USERAGENT, "Snap3D_for_Wordpress/1.0");
+
+    // Include header in result? (0 = yes, 1 = no)
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+
+    // Should cURL return or print out the data? (true = return, false = print)
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    // Timeout in seconds
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+    // Download the given URL, and return output
+    $output = curl_exec($ch);
+
+    // Close the cURL resource, and free system resources
+    curl_close($ch);
+
+    return $output;
 }
 
 
