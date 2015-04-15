@@ -122,7 +122,7 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function extract_id_from_url($url){
 
     // Remove trailing slashes
-    $url = rtrim($snap3d_url, '/');
+    $url = rtrim($url, '/');
 
     // Look for digits at the end of the string
     if(preg_match("/\/(\d+)$/",$url,$matches)){
