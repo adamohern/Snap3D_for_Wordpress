@@ -92,7 +92,7 @@ add_action( 'save_post', 'Snap3D_meta_save' );
 // Render thumbnail in theme
 add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content ) {
-    $embed = curl_download("http://snap3d.io/?code=570");
+    //$embed = curl_download("http://snap3d.io/?code=570");
     return $content . "\n<!-- Snap3D_for_Wordpress was here. Generated code: $embed -->\n";
 }
 
