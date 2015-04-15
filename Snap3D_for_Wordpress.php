@@ -61,7 +61,7 @@ function new_post_thumbnail_meta_box() {
 
     // render our HTML form ?>
     <p>
-        <label for="Snap3D-URL" class="Snap3D-row-title"><?php _e( 'Snap3D URL', 'Snap3D-textdomain' )?></label>
+        <label for="Snap3D-URL" class="Snap3D-row-title"><?php _e( 'Snap3D URL or id', 'Snap3D-textdomain' )?></label>
         <input type="text" name="Snap3D-URL" id="Snap3D-URL" value="<?php if ( isset ( $Snap3D_stored_meta ) ) echo $Snap3D_stored_meta; ?>" />
     </p>
 
@@ -103,7 +103,12 @@ function filter_thumb( $content ) {
 
         // Are we able to extract digits from the end?
         if($snap3d_id = extract_id_from_url($snap3d_url)){
+
             $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
+
+            // Contact the mothership for the latest and greatest embed code
+            $embed .= curl_download("http://snap3d.io/?code=$snap3d_id");
+
         } else {
             $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. -->";
         }
@@ -130,6 +135,33 @@ function extract_id_from_url($url){
     } else {
       return false;
     }
+}
+
+
+// Function for getting the mothership to generate an embed code for us.
+function curl_download($url){
+    // is cURL installed yet?
+    if (!function_exists('curl_init')){
+        die('Sorry cURL is not installed!');
+    }
+    $ch = curl_init();
+    // Set URL to download
+    curl_setopt($ch, CURLOPT_URL, $url);
+    // Set referer to Wordpress site URL
+    curl_setopt($ch, CURLOPT_REFERER, get_site_url());
+    // User agent
+    curl_setopt($ch, CURLOPT_USERAGENT, "Snap3D_for_Wordpress/1.0");
+    // Include header in result? (0 = yes, 1 = no)
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    // Should cURL return or print out the data? (true = return, false = print)
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Timeout in seconds
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    // Download the given URL, and return output
+    $output = curl_exec($ch);
+    // Close the cURL resource, and free system resources
+    curl_close($ch);
+    return $output;
 }
 
 
