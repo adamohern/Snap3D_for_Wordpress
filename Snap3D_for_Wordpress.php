@@ -97,7 +97,7 @@ function filter_thumb( $content ) {
     if($snap3d_id = extract_id_from_url($snap3d_url)){
         $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
     } else {
-        $embed = "<!-- Snap3D_for_Wordpress: Invalid URL. -->";
+        $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. -->";
     }
 
     return $content . "\n<!-- Snap3D_for_Wordpress was here. -->\n$embed\n";
