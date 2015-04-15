@@ -103,13 +103,8 @@ function filter_thumb( $content ) {
 
         // Are we able to extract digits from the end?
         if($snap3d_id = extract_id_from_url($snap3d_url)){
-            $embed =
-                "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->".
-                '<div style="width:100%;height:0px;position:relative;padding-bottom:56.25%;margin-bottom:1em;" class="lightning-embed">'."\n".
-                '<iframe src="http://lightning.cadjunkie.com/?embed='.$snap3d_id.'" width="100%" height="100%" frameborder="0" scrolling="no" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;"></iframe>'."\n".
-                "</div>\n";
 
-            return $embed;
+            return render_embed($snap3d_id);
 
         } else {
             $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. Using default Featured Image. -->\n";
@@ -127,7 +122,36 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 
 
-//
+
+//function filter_the_content($content){
+//    preg_match('(snap3d.io)([\/\w_\.-]*)*\/?',$content,$matches);
+//    unset($matches[0]);
+//    foreach($matches as $match){
+//        $id = extract_id_from_url($match);
+//        $embed = render_embed($id);
+//        $content = str_replace($match,$embed,$content);
+//    }
+//    return $content;
+//}
+//add_filter( 'the_content', 'filter_the_content' );
+
+
+
+
+
+// Renders iFrame embed code
+function render_embed($id){
+    return
+    "<!-- Snap3D_for_Wordpress: embedding post $id -->".
+    '<div style="width:100%;height:0px;position:relative;padding-bottom:56.25%;margin-bottom:1em;" class="lightning-embed">'."\n".
+    '<iframe src="http://lightning.cadjunkie.com/?embed='.$id.'" width="100%" height="100%" frameborder="0" scrolling="no" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;"></iframe>'."\n".
+    "</div>\n";
+}
+
+
+
+// Pulls final digits from url,
+// or just uses digits if that's all there is.
 function extract_id_from_url($url){
 
     // Remove trailing slashes
