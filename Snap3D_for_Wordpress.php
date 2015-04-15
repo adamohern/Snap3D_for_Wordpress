@@ -92,7 +92,9 @@ add_action( 'save_post', 'Snap3D_meta_save' );
 // Render thumbnail in theme
 add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content ) {
-    return $content . "\n<!-- Snap3D_for_Wordpress was here. -->";
+
+    $snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true );
+    return $content . "\n<!-- Snap3D_for_Wordpress was here. '$snap3d_url' available. -->";
 }
 
 
