@@ -94,6 +94,10 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content ) {
 
     $snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true );
+
+    // Remove trailing slashes
+    $snap3d_url = rtrim($snap3d_url, '/');
+
     if($snap3d_id = extract_id_from_url($snap3d_url)){
         $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
     } else {
@@ -107,12 +111,9 @@ function filter_thumb( $content ) {
 function extract_id_from_url($url){
     //$url='http://domain.com/artist/song/music-videos/song-title/9393903';
 
-    if(preg_match("/\/(\d+)$/",$url,$matches))
-    {
+    if(preg_match("/\/(\d+)$/",$url,$matches)){
       return $matches[1];
-    }
-    else
-    {
+    } else {
       return false;
     }
 }
