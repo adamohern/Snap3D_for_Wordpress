@@ -103,16 +103,25 @@ function filter_thumb( $content ) {
 
         // Are we able to extract digits from the end?
         if($snap3d_id = extract_id_from_url($snap3d_url)){
-            $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
+            $embed =
+                "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->".
+                '<div style="width:100%;height:0px;position:relative;padding-bottom:56.25%;margin-bottom:1em;" class="lightning-embed">'."\n".
+                '<iframe src="http://lightning.cadjunkie.com/?embed='.$snap3d_id.'" width="100%" height="100%" frameborder="0" scrolling="no" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;"></iframe>'."\n".
+                "</div>\n";
+
+            return $embed;
+
         } else {
-            $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. -->";
+            $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. Using default Featured Image. -->\n";
         }
 
     } else {
-        $embed = "<!-- Snap3D_for_Wordpress: no URL provided. -->";
+        $embed = "<!-- Snap3D_for_Wordpress: no URL provided. Using default Featured Image. -->\n";
     }
 
-    return $content . "\n<!-- Snap3D_for_Wordpress was here. -->\n$embed\n";
+    return $embed.$content;
+
+
 }
 add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
