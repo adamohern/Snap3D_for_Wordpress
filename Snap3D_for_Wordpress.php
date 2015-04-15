@@ -96,5 +96,4 @@ function filter_thumb( $content ) {
 }
 
 
-
 ?>
