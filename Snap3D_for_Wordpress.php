@@ -94,9 +94,28 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content ) {
 
     $snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true );
-    return $content . "\n<!-- Snap3D_for_Wordpress was here. '$snap3d_url' available. -->";
+    if($snap3d_id = extract_id_from_url($snap3d_url)){
+        $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
+    } else {
+        $embed = "<!-- Snap3D_for_Wordpress: Invalid URL. -->";
+    }
+
+    return $content . "\n<!-- Snap3D_for_Wordpress was here. -->\n$embed\n";
 }
 
+
+function extract_id_from_url($url){
+    //$url='http://domain.com/artist/song/music-videos/song-title/9393903';
+
+    if(preg_match("/\/(\d+)$/",$url,$matches))
+    {
+      return $matches[1];
+    }
+    else
+    {
+      return false;
+    }
+}
 
 
 ?>
