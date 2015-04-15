@@ -93,15 +93,19 @@ add_action( 'save_post', 'Snap3D_meta_save' );
 add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content ) {
 
-    $snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true );
+    if($snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true )){
 
-    // Remove trailing slashes
-    $snap3d_url = rtrim($snap3d_url, '/');
+        // Remove trailing slashes
+        $snap3d_url = rtrim($snap3d_url, '/');
 
-    if($snap3d_id = extract_id_from_url($snap3d_url)){
-        $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
+        if($snap3d_id = extract_id_from_url($snap3d_url)){
+            $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
+        } else {
+            $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. -->";
+        }
+
     } else {
-        $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. -->";
+        $embed = "<!-- Snap3D_for_Wordpress: no URL provided. -->";
     }
 
     return $content . "\n<!-- Snap3D_for_Wordpress was here. -->\n$embed\n";
