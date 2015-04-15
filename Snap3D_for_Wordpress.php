@@ -46,19 +46,25 @@ add_action('do_meta_boxes', 'render_new_post_thumbnail_meta_box');
 
 // Glom onto our copy of the Featured Image meta box
 function new_post_thumbnail_meta_box() {
-    global $post; // we know what this does
+    // we know what this does
+    global $post;
 
-    $thumbnail_id = get_post_meta( $post->ID, '_thumbnail_id', true ); // grabing the thumbnail id of the post
-    echo _wp_post_thumbnail_html( $thumbnail_id ); // echoing the html markup for the thumbnail
+    // grabing the thumbnail id of the post
+    $thumbnail_id = get_post_meta( $post->ID, '_thumbnail_id', true );
+    // echoing the html markup for the thumbnail
+    echo _wp_post_thumbnail_html( $thumbnail_id );
 
+    // create our own nonce for security purposes
     wp_nonce_field( basename( __FILE__ ), 'Snap3D_nonce' );
-    $Snap3D_stored_meta = get_post_meta( $post->ID );
+    // grab existing meta data
+    $Snap3D_stored_meta = get_post_meta( $post->ID,'Snap3D-URL',true );
 
-    ?>
+    // render our HTML form ?>
     <p>
         <label for="Snap3D-URL" class="Snap3D-row-title"><?php _e( 'Snap3D URL', 'Snap3D-textdomain' )?></label>
-        <input type="text" name="Snap3D-URL" id="Snap3D-URL" value="<?php if ( isset ( $Snap3D_stored_meta['Snap3D-URL'] ) ) echo $Snap3D_stored_meta['Snap3D-URL'][0]; ?>" />
+        <input type="text" name="Snap3D-URL" id="Snap3D-URL" value="<?php if ( isset ( $Snap3D_stored_meta ) ) echo $Snap3D_stored_meta; ?>" />
     </p>
+
     <?php
 }
 
@@ -90,14 +96,12 @@ add_action( 'save_post', 'Snap3D_meta_save' );
 
 
 // Render thumbnail in theme
-add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function filter_thumb( $content ) {
 
+    // Is there an existing meta field?
     if($snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true )){
 
-        // Remove trailing slashes
-        $snap3d_url = rtrim($snap3d_url, '/');
-
+        // Are we able to extract digits from the end?
         if($snap3d_id = extract_id_from_url($snap3d_url)){
             $embed = "<!-- Snap3D_for_Wordpress: embedding post $snap3d_id -->";
         } else {
@@ -110,11 +114,17 @@ function filter_thumb( $content ) {
 
     return $content . "\n<!-- Snap3D_for_Wordpress was here. -->\n$embed\n";
 }
+add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 
+
+//
 function extract_id_from_url($url){
-    //$url='http://domain.com/artist/song/music-videos/song-title/9393903';
 
+    // Remove trailing slashes
+    $url = rtrim($snap3d_url, '/');
+
+    // Look for digits at the end of the string
     if(preg_match("/\/(\d+)$/",$url,$matches)){
       return $matches[1];
     } else {
