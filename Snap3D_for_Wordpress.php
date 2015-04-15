@@ -31,4 +31,25 @@ function filter_thumb( $content ) {
     return $content . "\n<!-- Snap3D_for_Wordpress was here. -->";
 }
 
+function new_post_thumbnail_meta_box() {
+    global $post; // we know what this does
+
+    echo '&lt;p&gt;Content above the image.&lt;/p&gt;';
+
+    $thumbnail_id = get_post_meta( $post->ID, '_thumbnail_id', true ); // grabing the thumbnail id of the post
+    echo _wp_post_thumbnail_html( $thumbnail_id ); // echoing the html markup for the thumbnail
+
+    echo '&lt;p&gt;Content below the image.&lt;/p&gt;';
+}
+function render_new_post_thumbnail_meta_box() {
+    global $post_type; // lets call the post type
+
+    // remove the old meta box
+    remove_meta_box( 'postimagediv','post','side' );
+
+    // adding the new meta box.
+    add_meta_box('postimagediv', __('Featured Image'), 'new_post_thumbnail_meta_box', $post_type, 'side', 'low');
+}
+add_action('do_meta_boxes', 'render_new_post_thumbnail_meta_box');
+
 ?>
