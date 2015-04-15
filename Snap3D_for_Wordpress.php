@@ -125,7 +125,7 @@ function extract_id_from_url($url){
     $url = rtrim($url, '/');
 
     // Look for digits at the end of the string
-    if(preg_match("/\/(\d+)$/",$url,$matches)){
+    if(preg_match("/(\d+)$/",$url,$matches)){
       return $matches[1];
     } else {
       return false;
