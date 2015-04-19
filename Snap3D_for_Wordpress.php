@@ -141,7 +141,11 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 // Renders iFrame embed code
 function render_embed($id){
-    return file_get_contents("http://snap3d.io/?code=$id");
+    return
+    "<!-- Snap3D_for_Wordpress: embedding post $id -->".
+    '<div style="width:100%;height:0px;position:relative;padding-bottom:56.25%;margin-bottom:1em;" class="lightning-embed">'."\n".
+    '<iframe src="http://lightning.cadjunkie.com/?embed='.$id.'" width="100%" height="100%" frameborder="0" scrolling="no" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;"></iframe>'."\n".
+    "</div>\n";
 }
 
 
