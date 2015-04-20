@@ -124,7 +124,7 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 
 function filter_the_content($content){
-    preg_match('#(?<!"|"http://)(http://)*snap3d.io/[a-zA-Z0-9]*/[a-zA-Z0-9]*#',$content,$matches);
+    preg_match('#(?<!"|"http:\/\/)(http:\/\/)*snap3d.io\/[a-zA-Z0-9]*\/[a-zA-Z0-9\/]*#g',$content,$matches);
     unset($matches[0]);
 
     if(!empty($matches) ){
