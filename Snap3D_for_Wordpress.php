@@ -127,7 +127,7 @@ function filter_the_content($content){
     preg_match('#(?<!"|"http://)(http://)*snap3d.io/[a-zA-Z0-9]*/[a-zA-Z0-9]*#',$content,$matches);
     unset($matches[0]);
 
-    if(is_array($matches)){
+    if(!empty($matches) ){
         $content = "\n<!-- Snap3D_for_Wordpress: Found URLs. Replacing with embeds. -->\n$content";
         foreach($matches as $match){
             $id = extract_id_from_url($match);
