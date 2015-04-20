@@ -143,19 +143,19 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 function render_embed($id){
 
     // Since we use this code internally, we can take a shortcut
-    // to the embed code if it's local. Otherwise we request it from
+    // to the embed code if the correct object class exists.
+    // Otherwise we request it from
     // Snap3D.io using file_get_contents().
+
     if(class_exists('lightning_post_obj')){
         $lightning_post_obj = new lightning_post_obj;
         $lightning_post_obj->set_post_id($id);
         return $lightning_post_obj->get_embed_code();
+
     } else {
+
         file_get_contents("http://snap3d.io/?code=$id");
-//        return
-//        "<!-- Snap3D_for_Wordpress: embedding post $id -->".
-//        '<div style="width:100%;height:0px;position:relative;padding-bottom:56.25%;margin-bottom:1em;" class="lightning-embed">'."\n".
-//        '<iframe src="http://lightning.cadjunkie.com/?embed='.$id.'" width="100%" height="100%" frameborder="0" scrolling="no" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;"></iframe>'."\n".
-//        "</div>\n";
+
     }
 
 }
