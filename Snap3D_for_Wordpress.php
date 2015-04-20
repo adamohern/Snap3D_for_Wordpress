@@ -145,8 +145,9 @@ function render_embed($id){
     // Since we use this code internally, we can take a shortcut
     // to the embed code if it's local. Otherwise we request it from
     // Snap3D.io using file_get_contents().
-    if(array_key_exists('lightning_post_obj', $GLOBALS)){
-        global $lightning_post_obj;
+    if(class_exists('lightning_post_obj')){
+        $lightning_post_obj = new lightning_post_obj;
+        $lightning_post_obj->set_post_id($id);
         return $lightning_post_obj->get_embed_code();
     } else {
         file_get_contents("http://snap3d.io/?code=$id");
