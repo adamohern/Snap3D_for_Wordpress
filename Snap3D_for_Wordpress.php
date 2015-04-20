@@ -128,7 +128,7 @@ function filter_the_content($content){
     unset($matches[0]);
 
     if(!empty($matches) ){
-        print_r $matches;
+        print_r($matches);
 //        $content = "\n<!-- Snap3D_for_Wordpress: Found URLs. Replacing with embeds. -->\n$content";
 //        foreach($matches as $match){
 //            $id = extract_id_from_url($match);
