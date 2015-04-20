@@ -139,7 +139,6 @@ add_filter( 'the_content', 'filter_the_content' );
 
 
 
-
 // Gets iFrame embed code from the Snap3D mothership.
 function render_embed($id){
 
