@@ -124,14 +124,14 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 
 function filter_the_content($content){
-    preg_replace_callback(
+    $new_content = preg_replace_callback(
         '#(?<!"|"http:\/\/)(http:\/\/)*snap3d.io\/[a-zA-Z0-9]*\/[a-zA-Z0-9\/]*#',
         function($matches){
             print_r($matches);
             $id = extract_id_from_url($match);
             return render_embed($id)."\n<!-- Replacing '$match' using id='$id'. -->\n";
         },
-        $new_content);
+        $content);
 
     return $new_content;
 }
