@@ -124,13 +124,17 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 
 function filter_the_content($content){
-    preg_match('/(?<!"|"http://)(http://)*snap3d.io/[a-zA-Z0-9]*/[a-zA-Z0-9]*/',$content,$matches);
+    preg_match('#(?<!"|"http://)(http://)*snap3d.io/[a-zA-Z0-9]*/[a-zA-Z0-9]*#',$content,$matches);
     unset($matches[0]);
-    foreach($matches as $match){
-        $id = extract_id_from_url($match);
-        $embed = render_embed($id);
-        $content = str_replace($match,$embed,$content);
+
+    if(is_array($matches)){
+        foreach($matches as $match){
+            $id = extract_id_from_url($match);
+            $embed = render_embed($id);
+            $content = str_replace($match,$embed,$content);
+        }
     }
+
     return $content;
 }
 add_filter( 'the_content', 'filter_the_content' );
