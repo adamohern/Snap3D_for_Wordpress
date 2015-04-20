@@ -128,12 +128,12 @@ function filter_the_content($content){
     unset($matches[0]);
 
     if(is_array($matches)){
-        $content = "<!-- Snap3D_for_Wordpress: Found URLs. Replacing with embeds. -->\n$content";
+        $content = "\n<!-- Snap3D_for_Wordpress: Found URLs. Replacing with embeds. -->\n$content";
         foreach($matches as $match){
             $id = extract_id_from_url($match);
             $embed = render_embed($id);
             $content = str_replace($match,$embed,$content);
-            $content .= "Replacing '$match' using id='$id'.\n";
+            $content .= "<!-- Replacing '$match' using id='$id'. -->\n";
         }
         $content = "$content\n<!-- Snap3D_for_Wordpress: Done. -->\n";
     } else {
