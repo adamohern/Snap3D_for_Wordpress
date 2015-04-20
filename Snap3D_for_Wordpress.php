@@ -129,10 +129,7 @@ function filter_the_content($content){
         function($matches){
             print_r($matches);
             $id = extract_id_from_url($match);
-            $embed = render_embed($id);
-            $content = str_replace($match,$embed,$content);
-            $content .= "<!-- Replacing '$match' using id='$id'. -->\n";
-            return $content;
+            return render_embed($id)."\n<!-- Replacing '$match' using id='$id'. -->\n";
         },
         $new_content);
 
