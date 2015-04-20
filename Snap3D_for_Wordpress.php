@@ -132,10 +132,11 @@ function filter_the_content($content){
             $embed = render_embed($id);
             $content = str_replace($match,$embed,$content);
             $content .= "<!-- Replacing '$match' using id='$id'. -->\n";
+            return $content;
         },
-        $content);
+        $new_content);
 
-    return $content;
+    return $new_content;
 }
 add_filter( 'the_content', 'filter_the_content' );
 
