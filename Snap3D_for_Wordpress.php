@@ -124,21 +124,18 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 
 function filter_the_content($content){
-    preg_match_all('#(?<!"|"http:\/\/)(http:\/\/)*snap3d.io\/[a-zA-Z0-9]*\/[a-zA-Z0-9\/]*#',$content,$matches);
-
-    if(!empty($matches[0]) ){
-        //print_r($matches[0]);
-        $content = "\n<!-- Snap3D_for_Wordpress: Found URLs. Replacing with embeds. -->\n$content";
-        foreach($matches[0] as $match){
+    preg_replace_callback(
+        '#(?<!"|"http:\/\/)(http:\/\/)*snap3d.io\/[a-zA-Z0-9]*\/[a-zA-Z0-9\/]*#',
+        function($matches){
+            print_r($matches);
+            foreach($matches[0] as $match){
             $id = extract_id_from_url($match);
             $embed = render_embed($id);
             $content = str_replace($match,$embed,$content);
             $content .= "<!-- Replacing '$match' using id='$id'. -->\n";
         }
-        $content = "$content\n<!-- Snap3D_for_Wordpress: Done. -->\n";
-    } else {
-        $content = "$content\n<!-- Snap3D_for_Wordpress: Nothing to replace. -->\n";
-    }
+        },
+        $content);
 
     return $content;
 }
