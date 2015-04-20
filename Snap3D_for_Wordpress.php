@@ -125,7 +125,13 @@ add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
 
 function filter_the_content($content){
     $new_content = preg_replace_callback(
-        '#(?<!"|"http:\/\/)(http:\/\/)*snap3d.io\/[a-zA-Z0-9]*\/[a-zA-Z0-9\/]*#',
+        // Find anything that:
+        // - (?i) is case-insensitive
+        // - (?<!"|"http:\/\/) Doesn't start with quotes (to avoid urls wrapped in img and a tags)
+        // - (http:\/\/)* May or may not start with http://
+        // - snap3d.io\/ Definitely containts "snap3d.io/"
+        // - [a-z0-9]*\/[a-z0-9\/]* e.g. "3d/123"
+        '#(?i)(?<!"|"http:\/\/)(http:\/\/)*snap3d.io\/[a-z0-9]*\/[a-z0-9\/]*#',
         function($matches){
             $id = extract_id_from_url($matches[0]);
             return render_embed($id)."\n<!-- Replacing '$match' using id='$id'. -->\n";
