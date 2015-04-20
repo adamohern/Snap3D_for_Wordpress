@@ -128,12 +128,10 @@ function filter_the_content($content){
         '#(?<!"|"http:\/\/)(http:\/\/)*snap3d.io\/[a-zA-Z0-9]*\/[a-zA-Z0-9\/]*#',
         function($matches){
             print_r($matches);
-            foreach($matches[0] as $match){
             $id = extract_id_from_url($match);
             $embed = render_embed($id);
             $content = str_replace($match,$embed,$content);
             $content .= "<!-- Replacing '$match' using id='$id'. -->\n";
-        }
         },
         $content);
 
