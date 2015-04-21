@@ -160,7 +160,10 @@ function render_embed($id){
 
     } else {
 
-        file_get_contents("http://snap3d.io/?code=$id&autoload=0");
+        if(is_single()) $autoload=1;
+        else $autoload=0;
+
+        file_get_contents("http://snap3d.io/?code=$id&autoload=$autoload");
 
     }
 
