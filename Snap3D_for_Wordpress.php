@@ -99,7 +99,7 @@ add_action( 'save_post', 'Snap3D_meta_save' );
 function filter_thumb( $content ) {
 
     // Is there an existing meta field?
-    if($snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true )){
+    if($snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true ) && get_post_type()!='lightning_posttype'){
 
         // Are we able to extract digits from the end?
         if($snap3d_id = extract_id_from_url($snap3d_url)){
