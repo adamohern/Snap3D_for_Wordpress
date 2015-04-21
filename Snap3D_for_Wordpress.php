@@ -98,24 +98,27 @@ add_action( 'save_post', 'Snap3D_meta_save' );
 // Render thumbnail in theme
 function filter_thumb( $content ) {
 
-    // Is there an existing meta field?
-    if($snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true ) && get_post_type()!='lightning_posttype'){
+    if(get_post_type()!='lightning_posttype'){
+        // Is there an existing meta field?
+        if($snap3d_url = get_post_meta( get_the_ID(), 'Snap3D-URL', true )){
 
-        // Are we able to extract digits from the end?
-        if($snap3d_id = extract_id_from_url($snap3d_url)){
+            // Are we able to extract digits from the end?
+            if($snap3d_id = extract_id_from_url($snap3d_url)){
 
-            return render_embed($snap3d_id);
+                return render_embed($snap3d_id);
+
+            } else {
+                $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. Using default Featured Image. -->\n";
+            }
 
         } else {
-            $embed = "<!-- Snap3D_for_Wordpress: '$snap3d_url' is invalid. Using default Featured Image. -->\n";
+            $embed = "<!-- Snap3D_for_Wordpress: no URL provided. Using default Featured Image. -->\n";
         }
 
+        return $embed.$content;
     } else {
-        $embed = "<!-- Snap3D_for_Wordpress: no URL provided. Using default Featured Image. -->\n";
+        return $content;
     }
-
-    return $embed.$content;
-
 
 }
 add_filter( 'post_thumbnail_html', 'filter_thumb', 10, 2 );
