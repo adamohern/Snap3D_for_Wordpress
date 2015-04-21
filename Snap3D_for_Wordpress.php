@@ -148,9 +148,6 @@ add_filter( 'the_content', 'filter_the_content' );
 // Gets iFrame embed code from the Snap3D mothership.
 function render_embed($id){
 
-    if(is_single()) $autoload=1;
-    else $autoload=0;
-
     // Since we use this code internally, we can take a shortcut
     // to the embed code if the correct object class exists.
     // Otherwise we request it from
@@ -159,12 +156,11 @@ function render_embed($id){
     if(class_exists('lightning_post_obj')){
         $lightning_post_obj = new lightning_post_obj;
         $lightning_post_obj->set_post_id($id);
-        $lightning_post_obj->set_autoload($autoload);
         return $lightning_post_obj->get_embed_code();
 
     } else {
 
-        file_get_contents("http://snap3d.io/?code=$id&autoload=$autoload");
+        file_get_contents("http://snap3d.io/?code=$id");
 
     }
 
