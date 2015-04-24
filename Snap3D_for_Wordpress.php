@@ -159,6 +159,7 @@ function render_embed($id){
     if(class_exists('lightning_post_obj')){
         $lightning_post_obj = new lightning_post_obj;
         $lightning_post_obj->set_post_id($id);
+        $lightning_post_obj->set_noload(true);
         return $lightning_post_obj->get_embed_code();
 
     } else {
