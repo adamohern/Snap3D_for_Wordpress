@@ -163,7 +163,7 @@ function render_embed($id){
 
     } else {
 
-        file_get_contents("http://snap3d.io/?code=$id");
+        file_get_contents("http://snap3d.io/?code=$id&noload=true");
 
     }
 
