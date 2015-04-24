@@ -156,15 +156,18 @@ function render_embed($id){
     // Otherwise we request it from
     // Snap3D.io using file_get_contents().
 
+    if(is_single()) $noload = false;
+    else $noload = true;
+
     if(class_exists('lightning_post_obj')){
         $lightning_post_obj = new lightning_post_obj;
         $lightning_post_obj->set_post_id($id);
-        $lightning_post_obj->set_noload(true);
+        $lightning_post_obj->set_noload($noload);
         return $lightning_post_obj->get_embed_code();
 
     } else {
 
-        file_get_contents("http://snap3d.io/?code=$id&noload=true");
+        file_get_contents("http://snap3d.io/?code=$id&noload=$noload");
 
     }
 
